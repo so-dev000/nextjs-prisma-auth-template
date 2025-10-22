@@ -24,18 +24,21 @@ A modern, full-stack web application template built with Next.js 15, Prisma, Nex
     ```bash
     npm install
     ```
-3.  **Run the setup script** to create your `.env` file and run database migrations:
+3.  **Start database server**:
+    ```bash
+    docker compose up -d
+    ```
+4.  **Run the setup script** to create your `.env` file and run database migrations:
     ```bash
     npm run setup
     ```
-4.  **Configure environment variables** in the `.env` file with your database and Google OAuth credentials.
-5.  **Install pre-commit hooks**:
+5.  **Configure environment variables** in the `.env` file with your database and Google OAuth credentials.
+6.  **Install pre-commit hooks**:
     ```bash
     pre-commit install
     ```
-6.  **Start the database and development server**:
+7.  **Start development server**:
     ```bash
-    docker compose up -d
     npm run dev
     ```
 

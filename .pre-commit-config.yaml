@@ -1,15 +1,15 @@
 repos:
--   repo: local
+  - repo: local
     hooks:
-    -   id: eslint
+      - id: eslint
         name: eslint
         entry: npm run lint
         language: system
-        types: [javascript, typescript, tsx, jsx]
+        types: [javascript, ts, tsx, jsx]
         pass_filenames: false
-    -   id: type-check
+      - id: type-check
         name: type-check
         entry: npm run type-check
         language: system
-        types: [typescript, tsx]
+        types: [ts, tsx]
         pass_filenames: false

@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "setup": "cp .env.example .env && npm run db:migrate",
-    "lint": "eslint .",
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
@@ -18,8 +17,7 @@
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset",
-    "db:seed": "tsx prisma/seed.ts",
-    "type-check": "tsc --noEmit"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@emotion/css": "^11.13.5",
