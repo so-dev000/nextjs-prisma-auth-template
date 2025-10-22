@@ -1,110 +1,83 @@
-'use client';
+"use client";
 
-import { signIn, signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import React, { useCallback } from "react";
 import Link from "next/link";
-import { css } from '@emotion/css';
+import { signIn, signOut, useSession } from "next-auth/react";
+import {
+  Container,
+  Title,
+  Text,
+  Button,
+  Group,
+  Center,
+  Loader,
+} from "@mantine/core";
 
-const container = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
-`;
-
-const title = css`
-  color: #333;
-  margin-bottom: 2rem;
-`;
-
-const loginButton = css`
-  background-color: #4285f4;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #357ae8;
-  }
-`;
-
-const logoutButton = css`
-  background-color: #dc3545;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #c82333;
-  }
-`;
-
-const aboutLink = css`
-  color: #0070f3;
-  font-size: 1.2rem;
-  font-weight: 500;
-  text-decoration: none;
-  margin-bottom: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #0070f3;
-  border-radius: 4px;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: #0070f3;
-    color: white;
-  }
-`;
-
-const userName = css`
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-`;
-
-export default function Home() {
+export default function HomePage() {
   const { data: session, status } = useSession();
 
-  if (status === 'loading') {
-    return (
-      <div className={container}>
-        <p>読み込み中...</p>
-      </div>
-    );
-  }
+  const onSignIn = useCallback(() => {
+    signIn("google");
+  }, []);
 
-  if (session?.user) {
+  const onSignOut = useCallback(() => {
+    signOut();
+  }, []);
+
+  if (status === "loading") {
     return (
-      <div className={container}>
-        <h1 className={title}>ホーム</h1>
-        <p className={userName}>👤 {session.user.name}</p>
-        <Link href="/about" className={aboutLink}>
-          Aboutページへ
-        </Link>
-        <button onClick={() => signOut()} className={logoutButton}>
-          ログアウト
-        </button>
-      </div>
+      <Center style={{ minHeight: "60vh" }}>
+        <Loader />
+      </Center>
     );
   }
 
   return (
-    <div className={container}>
-      <h1 className={title}>ログイン</h1>
-      <button onClick={() => signIn("google")} className={loginButton}>
-        Googleでログイン
-      </button>
-    </div>
+    <Container
+      size="sm"
+      style={{
+        minHeight: "80vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 16,
+        paddingTop: 24,
+        paddingBottom: 24,
+      }}
+    >
+      <Title order={2}>Next.js + Prisma + NextAuth</Title>
+      <Text color="dimmed">
+        シンプルなテンプレートページです。必要に応じてコンポーネントを追加してください。
+      </Text>
+
+      {session?.user ? (
+        <>
+          <Text>{`ようこそ、${session.user.name ?? session.user.email ?? "ユーザー"}`}</Text>
+
+          <Group>
+            <Button component="a" variant="outline" href="/about">
+              About
+            </Button>
+
+            <Button color="red" onClick={onSignOut}>
+              ログアウト
+            </Button>
+          </Group>
+
+          <Text size="sm" color="dimmed">
+            セッション情報は NextAuth で提供されています。
+          </Text>
+        </>
+      ) : (
+        <>
+          <Text>ログインして続行してください。</Text>
+
+          <Group>
+            <Button onClick={onSignIn}>Googleでログイン</Button>
+          </Group>
+        </>
+      )}
+    </Container>
   );
 }
